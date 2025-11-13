@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/estilo.css">
+    <title>Actividad Filosofia</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Actividad Filosofia</h1>
+        <h3>Para esta actividad saldran afirmaciones las cuales debes indicar cual es verdadera o falsa, este tiene un contador de 10 segundos en el cual deberas responder antes de que se agote el tiempo. </h3>
+        <h6>Para iniciar dar click en el boton continuar.</h6>
+
+        <div id="containerPreg" class="containerPreg hidden">
+            <div class="bTiempo">
+                <div id="bProgreso"></div>
+            </div>
+            <p id="pregunta" class="pregunta"></p>
+            <div>
+                <button id="opV" class="opV hidden" onclick="respuesta(this)">verdadero</button>
+                <button id="opF" class="opF hidden" onclick="respuesta(this)">falso</button>
+            </div>
+            <div id="contador"></div>
+            <div id="mensaje" class="mensaje hidden"></div>
+        </div>
+        <button class="btnC" onclick="continuar()">Continuar</button>
+        <button class="btnS" onclick="Salir()">Salir</button>
+    </div>
+    <script>
+        let mensaje= document.getElementById("mensaje");
+        let tiempoL;
+        let rCorrectas= 0;
+        let rIncorrectas= 0;
+        let noResp= 0;
+        let preguntas=[{
+            texto:"La filosofía no cambia a lo largo del tiempo.", correcta: "falso"
+        },
+        {
+            texto:"Sócrates nunca escribió nada, su pensamiento lo conocemos por sus discípulos.", correcta: "verdadero"
+        },
+        {
+            texto: "Para    Aristóteles, la virtud se encuentra en el término medio.", correcta: "verdadero"
+        },
+        {
+            texto: "Los sofistas creían que la verdad era absoluta y universal.", correcta: "falso"
+        },
+        {
+            texto: "La ética es una rama de la filosofía que estudia el comportamiento humano.", correcta: "verdadero"
+        },
+        {
+            texto: "Según Kant, las acciones son morales si se hacen por deber.", correcta: "verdadero"
+        },
+        {
+            texto: 'Descartes es famoso por su frase: "Pienso, luego existo".', correcta: "verdadero"
+        },
+        {
+            texto: "Nietzsche defendía los valores tradicionales del cristianismo.", correcta: "falso"
+        },
+        {
+            texto: "El empirismo sostiene que el conocimiento viene de la experiencia.", correcta: "verdadero"
+        },
+        {
+            texto: "La moral es igual en todas las culturas y épocas.", correcta: "falso"
+        },
+        {
+            texto: "El existencialismo niega completamente la libertad del ser humano.", correcta: "falso"
+        }]
+        
+        let preg;
+        let i=0;
+
+        let intervaloProg;
+        let duracion=10000;
+        let tiempoTranscurrido= 0;
+
+        function mostrarPregunta(){
+                if(preguntas.length === 0){
+                    finalizar();
+                    return;
+                }
+
+                const num= Math.floor(Math.random() * preguntas.length);
+                i= num;
+                preg= preguntas[i];
+                document.getElementById("pregunta").innerText= preg.texto;
+                preguntas.splice(i, 1);
+
+                let barra= document.getElementById("bProgreso");
+                barra.style.width= "0%";
+                tiempoTranscurrido= 0;
+
+                intervaloProg = setInterval(() => {
+                    tiempoTranscurrido += 100;
+                    let progreso= (tiempoTranscurrido / duracion) * 100;
+                    barra.style.width= progreso + "%";
+                    if(tiempoTranscurrido >= duracion){
+                        clearInterval(intervaloProg);
+                    }
+                }, 100);
+
+                tiempoL= setTimeout(() => {
+                    document.getElementById("mensaje").classList.remove("hidden");
+                    noResp++;
+                    mensaje.textContent= "Sin responder, se agoto el tiempo";
+                    mensaje.style.backgroundColor= " orange";
+                    mostrarPregunta();
+                }, duracion)
+        }
+
+        function respuesta(boton){
+            if(boton.textContent === preg.correcta){
+                document.getElementById("mensaje").classList.remove("hidden");
+                clearTimeout(tiempoL);
+                clearInterval(intervaloProg);
+                rCorrectas++;
+                mensaje.textContent = "Respuesta Correcta";
+                mensaje.style.backgroundColor= "green";
+                // clearInterval(interval);
+                // clearTimeout();
+                mostrarPregunta();
+            }else{
+                document.getElementById("mensaje").classList.remove("hidden");
+                clearTimeout(tiempoL);
+                clearInterval(intervaloProg);
+                rIncorrectas++;
+                mensaje.textContent = "Respuesta Incorrecta";
+                mensaje.style.backgroundColor= "red";
+                // clearInterval(interval);
+                // clearTimeout();
+                mostrarPregunta();
+            }
+        }
+
+        function continuar(){
+            mostrarPregunta();
+            document.getElementById("opV").classList.remove("hidden");
+            document.getElementById("opF").classList.remove("hidden");
+            document.getElementById("containerPreg").classList.remove("hidden");
+        }
+  
+        function finalizar(){
+            alert("Felicitaciones, has terminado!\n\nTus respuestas: \n\n"+rCorrectas+" correctas.\n"+rIncorrectas+" incorrectas.\n"+noResp+" sin responder");
+
+            window.location.href= 'index.html';
+        }
+    </script>
+</body>
+</html>
