@@ -1,7 +1,7 @@
 body{
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    background-image: url(../imagenes/ChatGPT\ Image\ 18\ jul\ 2025\,\ 11_57_48\ a.m..png);
+    background-image: url(ChatGPT\ Image\ 18\ jul\ 2025\,\ 11_57_48\ a.m..png);
     image-resolution: 100%;
 }
 h1{
@@ -114,4 +114,5 @@ h6{
 }
 .hidden{
     display: none;
+
 }
